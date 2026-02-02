@@ -1,0 +1,59 @@
+/* ==========================================
+   HOMEPAGE - WHATSAPP DASHBOARD LAYOUT
+   ========================================== */
+
+.home-page {
+  width: 100vw;
+  height: 100vh;
+  background: #111b21;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.chat-dashboard {
+  width: 100%;
+  max-width: 1600px;
+  height: calc(100vh - 40px);
+  background: #0b141a;
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.chat-main {
+  background: #0b141a;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .chat-dashboard {
+    grid-template-columns: 320px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    padding: 0;
+  }
+  
+  .chat-dashboard {
+    grid-template-columns: 1fr;
+    border-radius: 0;
+    height: 100vh;
+  }
+  
+  .chat-main {
+    display: none;
+  }
+  
+  .chat-main.mobile-active {
+    display: flex;
+  }
+}

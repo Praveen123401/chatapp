@@ -1,0 +1,127 @@
+/* ==========================================
+   GROUP CHAT MESSAGE BUBBLES - PRO VERSION
+   ========================================== */
+
+:root {
+  /* Member Name Colors - Add as many as needed */
+  --user-color-1: #38bdf8; /* Sky Blue */
+  --user-color-2: #fb7185; /* Rose */
+  --user-color-3: #34d399; /* Emerald */
+  --user-color-4: #fbbf24; /* Amber */
+  --user-color-5: #a78bfa; /* Violet */
+}
+
+/* 1. MESSAGE LAYOUT */
+.group-messages-wrapper {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Tighter gap for real conversation feel */
+  background: var(--chat-bg);
+  overflow-y: auto;
+}
+
+.group-message-item {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+  position: relative;
+  animation: messageSlide 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+/* Left/Right Alignment */
+.group-message-item.received { align-self: flex-start; }
+.group-message-item.sent { align-self: flex-end; }
+
+/* 2. SENDER NAME (The "Group" look) */
+.group-message-sender {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  margin-left: 8px; /* Offset for received messages */
+  letter-spacing: 0.3px;
+}
+
+/* Assign different colors based on a class or data attribute */
+.sender-1 { color: var(--user-color-1); }
+.sender-2 { color: var(--user-color-2); }
+.sender-3 { color: var(--user-color-3); }
+
+/* 3. MESSAGE BUBBLE DESIGN */
+.group-message-content {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+/* RECEIVED Bubble Style */
+.received .group-message-content {
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  border-radius: 0 14px 14px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* SENT Bubble Style */
+.sent .group-message-content {
+  background: var(--primary-color);
+  color: white;
+  border-radius: 14px 0 14px 14px;
+}
+
+/* 4. TIMESTAMP & FOOTER */
+.group-message-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.group-message-time {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.sent .group-message-time {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 5. IMAGE ATTACHMENTS */
+.group-message-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 8px;
+  display: block;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* 6. TYPING INDICATOR PILL */
+.group-typing-pill {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  width: fit-content;
+  margin: 10px 0;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@keyframes messageSlide {
+  from { opacity: 0; transform: translateY(12px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .group-message-item { max-width: 88%; }
+}

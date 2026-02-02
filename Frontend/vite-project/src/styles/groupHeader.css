@@ -1,0 +1,140 @@
+/* ==========================================
+   GROUP HEADER - PREMIUM UPDATED VERSION
+   ========================================== */
+
+:root {
+  --group-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --header-bg: #1e293b;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-main: #f1f5f9;
+  --text-dim: #94a3b8;
+}
+
+.group-header {
+  height: 75px; /* Match standard chat header height */
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--header-bg);
+  backdrop-filter: blur(12px); /* Glass effect */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.group-header-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0; /* Prevents text overflow breaking layout */
+}
+
+/* THE AVATAR - Real App Depth */
+.group-header-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--group-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  flex-shrink: 0;
+}
+
+.group-header-details {
+  min-width: 0;
+}
+
+.group-header-details h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group-header-details p {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 2px 0 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ACTION BUTTONS (Voice/Video/Close) */
+.group-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 1rem;
+}
+
+.group-action-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  color: var(--text-dim);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group-action-btn:hover {
+  background: #334155;
+  color: white;
+  border-color: #475569;
+  transform: translateY(-2px);
+}
+
+/* Specifically for the Close/Back button */
+.group-header-close {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.group-header-close:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+/* --- RESPONSIVE FIXES --- */
+@media (max-width: 640px) {
+  .group-header {
+    height: 65px;
+    padding: 0 1rem;
+  }
+
+  .group-header-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+
+  .group-header-details h2 {
+    font-size: 0.9rem;
+  }
+
+  .group-header-details p {
+    font-size: 0.75rem;
+  }
+
+  .group-action-btn {
+    width: 36px;
+    height: 36px;
+  }
+}

@@ -1,0 +1,143 @@
+/* --- GLOBAL WRAPPER: Forced Dark --- */
+.fixed-dark-wrapper {
+  background-color: #08080a !important;
+  color: #ffffff !important;
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.fixed-main-container {
+  width: 1000px;
+  height: 650px;
+  background-color: #121214 !important;
+  border: 1px solid #27272a;
+  border-radius: 24px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* --- SIDEBAR --- */
+.fixed-sidebar {
+  width: 250px;
+  background-color: #0d0d0f !important;
+  border-right: 1px solid #27272a;
+  padding: 30px 15px;
+}
+
+.fixed-logo { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  font-weight: 800; 
+  margin-bottom: 40px; 
+  font-size: 1.2rem;
+  color: white !important;
+}
+
+.fixed-nav button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  color: #71717a !important;
+  transition: 0.3s;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.fixed-nav button:hover { background-color: #1c1c1f; color: white !important; }
+.fixed-nav button.active { background-color: #27272a !important; color: white !important; }
+
+/* --- CONTENT AREA --- */
+.fixed-content { flex: 1; padding: 40px; overflow-y: auto; background-color: #121214 !important; }
+.tab-title { font-size: 2rem; font-weight: 800; color: white !important; margin-bottom: 5px; }
+.tab-sub { color: #71717a !important; margin-bottom: 30px; }
+
+/* --- THEME SYSTEM --- */
+.theme-scroll-box {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-bottom: 30px;
+  padding-right: 10px;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 15px;
+}
+
+.theme-btn {
+  background-color: #1c1c1f !important;
+  border: 2px solid transparent;
+  padding: 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.theme-btn:hover { transform: scale(1.02); background-color: #27272a !important; }
+.theme-btn.selected { border-color: #3b82f6 !important; }
+
+.theme-dots { height: 40px; border-radius: 8px; display: flex; gap: 4px; padding: 6px; margin-bottom: 8px; }
+.dot-p { flex: 1; border-radius: 4px; background-color: hsl(var(--p)); }
+.dot-s { flex: 1; border-radius: 4px; background-color: hsl(var(--s)); }
+.dot-a { flex: 1; border-radius: 4px; background-color: hsl(var(--a)); }
+
+.theme-label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: #a1a1aa; text-transform: capitalize; }
+
+/* --- PREVIEW WRAPPER --- */
+.preview-wrap {
+  background-color: #09090b !important;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #27272a;
+}
+
+.mock-chat { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+.mock-header { padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.mock-avatar { width: 28px; height: 28px; border-radius: 50%; }
+.mock-messages { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.bubble-in { padding: 10px 15px; border-radius: 14px; font-size: 13px; align-self: flex-start; }
+.bubble-out { padding: 10px 15px; border-radius: 14px; font-size: 13px; align-self: flex-end; }
+
+/* --- OPTION CARDS --- */
+.option-stack { display: flex; flex-direction: column; gap: 15px; }
+.option-card {
+  background-color: #18181b !important;
+  padding: 20px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #27272a;
+}
+.opt-icon { color: #3b82f6; background: #27272a; padding: 10px; border-radius: 12px; }
+.opt-info h3 { font-size: 1rem; font-weight: 700; color: white !important; }
+.opt-info p { font-size: 0.8rem; color: #71717a !important; }
+
+/* --- ACCOUNT --- */
+.account-card {
+  background-color: #18181b !important;
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #27272a;
+}
+.user-profile { display: flex; align-items: center; gap: 20px; }
+.avatar-large { width: 60px; height: 60px; background: #27272a; border-radius: 50%; display: grid; place-items: center; font-size: 1.5rem; font-weight: bold; }
+
+/* --- UTILS --- */
+.animate-fade { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.theme-scroll-box::-webkit-scrollbar { width: 4px; }
+.theme-scroll-box::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }

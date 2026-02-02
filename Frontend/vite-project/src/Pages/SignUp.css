@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+/* PAGE */
+.signup-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #020617;
+}
+
+/* LEFT */
+.signup-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-card {
+  width: 420px;
+  padding: 30px;
+  background: #0f172a;
+  border-radius: 18px;
+  border: 1px solid #1e293b;
+}
+
+/* TOP */
+.signup-top {
+  display: flex;
+  justify-content: space-between;
+  color: #38bdf8;
+  margin-bottom: 18px;
+}
+
+.brand {
+  display: flex;
+  gap: 8px;
+}
+
+/* TEXT */
+.signup-title {
+  color: #f8fafc;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.signup-subtitle {
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+/* FORM */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.signup-input {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #f8fafc;
+}
+
+.password-box {
+  position: relative;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+/* SAVE PASSWORD */
+.remember-row {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* BUTTON */
+.signup-button {
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* MESSAGE */
+.info-text {
+  text-align: center;
+  color: #22c55e;
+  font-size: 13px;
+}
+
+/* FOOTER */
+.signup-footer {
+  margin-top: 18px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.signup-footer span {
+  color: #38bdf8;
+  cursor: pointer;
+}
+
+/* RIGHT DASHBOARD */
+.signup-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BLINKING DASHBOARD */
+.dashboard-blink {
+  width: 420px;
+  padding: 30px;
+  border-radius: 20px;
+  background: #020617;
+  border: 2px solid #38bdf8;
+  animation: blink 1.5s infinite alternate;
+  color: #e5e7eb;
+}
+
+@keyframes blink {
+  0% {
+    box-shadow: 0 0 10px #38bdf8;
+  }
+  100% {
+    box-shadow: 0 0 30px #38bdf8;
+  }
+}
+
+.dashboard-blink h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.dashboard-blink p {
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+/* BLINK CHAT */
+.blink-chat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .signup-page {
+    grid-template-columns: 1fr;
+  }
+  .signup-right {
+    display: none;
+  }
+}

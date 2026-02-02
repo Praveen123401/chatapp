@@ -1,0 +1,134 @@
+/* Modern Chat Header */
+.chat-header {
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chat-header-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-header-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+}
+
+.chat-header-details h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-header-status {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0.25rem 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success-color);
+}
+
+.status-indicator.offline {
+  background: var(--text-muted);
+}
+
+.chat-header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.header-action-btn:hover {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
+.header-action-btn.active {
+  color: var(--primary-color);
+}
+
+/* Call Buttons */
+.call-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.call-btn:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.call-btn.danger {
+  background: var(--danger-color);
+}
+
+.call-btn.danger:hover {
+  background: #dc2626;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .chat-header {
+    padding: 0.75rem;
+  }
+
+  .chat-header-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .chat-header-details h3 {
+    font-size: 0.9rem;
+  }
+
+  .chat-header-actions {
+    gap: 0.25rem;
+  }
+
+  .header-action-btn {
+    padding: 0.35rem;
+  }
+}
