@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { useAuthStore } from "../Store/useAuthStore.js";
-import { useChatStore } from "../Store/useChatStore.jsx";
+import { useEffect, useRef, useState } from "react";
+import { useAuthStore } from "../store/useAuthStore.js";
+import { useChatStore } from "../store/useChatStore.jsx";
 import GroupHeader from "./GroupHeader";
 import GroupMessageInput from "./GroupMessageInput";
 import MessageSkeleton from "./Skeletons/MessageSkeleton";
@@ -18,6 +18,9 @@ const GroupChatContainer = () => {
   } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
+  const audioRefs = useRef({});
+  const [playbackRates, setPlaybackRates] = useState({});
+  const rateOptions = [1, 1.5, 2];
 
   useEffect(() => {
     getGroupMessages(selectedGroup._id);
@@ -91,6 +94,44 @@ const GroupChatContainer = () => {
                       alt="Attachment"
                       className="sm:max-w-[200px] rounded-md mb-2"
                     />
+                  )}
+                  {message.audioMessage?.url && (
+                    <div className="voice-message">
+                      <audio
+                        controls
+                        src={message.audioMessage.url}
+                        ref={(el) => {
+                          if (el) {
+                            audioRefs.current[message._id] = el;
+                            el.playbackRate = playbackRates[message._id] || 1;
+                          }
+                        }}
+                      />
+                      <div className="voice-controls">
+                        {rateOptions.map((rate) => (
+                          <button
+                            key={rate}
+                            type="button"
+                            className={`voice-rate-btn ${
+                              (playbackRates[message._id] || 1) === rate ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setPlaybackRates((prev) => ({ ...prev, [message._id]: rate }));
+                              const audioEl = audioRefs.current[message._id];
+                              if (audioEl) audioEl.playbackRate = rate;
+                            }}
+                          >
+                            {rate}x
+                          </button>
+                        ))}
+                        {message.audioMessage?.duration ? (
+                          <span className="voice-duration">
+                            {Math.floor(message.audioMessage.duration / 60)}:
+                            {String(message.audioMessage.duration % 60).padStart(2, "0")}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
                   )}
                   {message.deletedForEveryone ? (
                     <p className="text-xs opacity-60 italic">Message deleted</p>

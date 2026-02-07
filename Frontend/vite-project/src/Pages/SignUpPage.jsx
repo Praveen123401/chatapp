@@ -14,7 +14,7 @@ import "./SignUp.css";
 const PASSWORD_REGEX = /^.{6,}$/;
 
 
-import { useAuthStore } from "../Store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);

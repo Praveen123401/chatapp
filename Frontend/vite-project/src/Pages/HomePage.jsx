@@ -1,13 +1,19 @@
-import { useChatStore } from "../Store/useChatStore";
-
+import { useChatStore } from "../store/useChatStore";
+import { useDashboardColorStore } from "../store/useDashboardColorStore";
 import Sidebar from "../components/Sidebar";
 import NochatSelected from "../components/NochatSelected";
 import ChatContainer from "../components/Chatcontainer";
 import GroupChatContainer from "../components/GroupChatContainer";
 import "../styles/HomePage.css";
+import { useEffect } from "react";
 
 const HomePage = () => {
   const { selectedUser, selectedGroup } = useChatStore();
+  const { dashboardColor } = useDashboardColorStore();
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-dashboard-color", dashboardColor);
+  }, [dashboardColor]);
 
   return (
     <div className="home-page">

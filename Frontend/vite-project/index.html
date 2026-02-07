@@ -1,10 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>vite-project</title>
+    <title>Chatty - Chat App</title>
+    <script>
+      // Load theme before app renders to prevent flash
+      const savedTheme = localStorage.getItem("chat-theme-storage");
+      if (savedTheme) {
+        try {
+          const themeData = JSON.parse(savedTheme);
+          if (themeData.state && themeData.state.theme) {
+            document.documentElement.setAttribute("data-theme", themeData.state.theme);
+          }
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,0 +1,393 @@
+/* Activity Dashboard */
+.activity-dashboard {
+  padding: 40px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: hsl(var(--b1));
+  min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+/* HEADER */
+.activity-header {
+  margin-bottom: 40px;
+}
+
+.activity-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: hsl(var(--bc));
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.activity-subtitle {
+  font-size: 1rem;
+  color: hsl(var(--bc) / 0.6);
+  margin: 0;
+}
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, hsl(var(--b2)), hsl(var(--b3)));
+  border: 1px solid hsl(var(--b3));
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px hsl(var(--b3) / 0.3);
+  border-color: hsl(var(--p));
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.stat-icon.users {
+  background: hsl(59 89% 51% / 0.2);
+  color: #fbbf24;
+}
+
+.stat-icon.messages {
+  background: hsl(219 89% 51% / 0.2);
+  color: #3b82f6;
+}
+
+.stat-icon.calls {
+  background: hsl(280 85% 65% / 0.2);
+  color: #a855f7;
+}
+
+.stat-icon.active {
+  background: hsl(142 76% 36% / 0.2);
+  color: #10b981;
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.1);
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-info h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(var(--bc) / 0.7);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: hsl(var(--bc));
+  margin: 0 0 4px 0;
+}
+
+.stat-detail {
+  font-size: 0.85rem;
+  color: hsl(var(--bc) / 0.6);
+}
+
+/* CHARTS GRID */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: hsl(var(--b2));
+  border: 1px solid hsl(var(--b3));
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  border-color: hsl(var(--p) / 0.5);
+  box-shadow: 0 8px 24px hsl(var(--p) / 0.1);
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: hsl(var(--bc));
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chart-title svg {
+  color: hsl(var(--p));
+}
+
+/* TOP USERS TABLE */
+.top-users-card {
+  background: hsl(var(--b2));
+  border: 1px solid hsl(var(--b3));
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.top-users-card:hover {
+  border-color: hsl(var(--p) / 0.5);
+  box-shadow: 0 8px 24px hsl(var(--p) / 0.1);
+}
+
+.users-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+  padding: 12px 16px;
+  background: hsl(var(--b3));
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: hsl(var(--bc) / 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+  padding: 14px 16px;
+  background: hsl(var(--b3) / 0.3);
+  border-radius: 8px;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.table-row:hover {
+  background: hsl(var(--b3) / 0.5);
+  padding-left: 20px;
+}
+
+.col-name {
+  font-weight: 600;
+  color: hsl(var(--bc));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-rank {
+  background: hsl(var(--p) / 0.2);
+  color: hsl(var(--p));
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.col-messages {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.message-count {
+  background: hsl(219 89% 51% / 0.2);
+  color: #3b82f6;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.col-status {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: hsl(var(--b3));
+  color: hsl(var(--bc));
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-badge.online {
+  background: hsl(142 76% 36% / 0.2);
+  color: #10b981;
+}
+
+.status-badge.offline {
+  background: hsl(var(--er) / 0.2);
+  color: hsl(var(--er));
+}
+
+/* CALL STATISTICS */
+.call-stats-card {
+  background: hsl(var(--b2));
+  border: 1px solid hsl(var(--b3));
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.call-stats-card:hover {
+  border-color: hsl(var(--p) / 0.5);
+  box-shadow: 0 8px 24px hsl(var(--p) / 0.1);
+}
+
+.call-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.call-stat {
+  background: linear-gradient(135deg, hsl(var(--b3)), hsl(var(--b2)));
+  border: 1px solid hsl(var(--b3));
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.call-stat:hover {
+  transform: translateY(-2px);
+  border-color: hsl(var(--p) / 0.5);
+}
+
+.call-stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.call-stat-icon.voice {
+  background: hsl(280 85% 65% / 0.2);
+  color: #a855f7;
+}
+
+.call-stat-icon.video {
+  background: hsl(219 89% 51% / 0.2);
+  color: #3b82f6;
+}
+
+.call-stat-icon.duration {
+  background: hsl(142 76% 36% / 0.2);
+  color: #10b981;
+}
+
+.call-stat:hover .call-stat-icon {
+  transform: scale(1.1);
+}
+
+.call-stat-info {
+  flex: 1;
+}
+
+.call-stat-info h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(var(--bc) / 0.7);
+  margin: 0 0 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.call-stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: hsl(var(--bc));
+  margin: 0 0 4px 0;
+}
+
+.call-stat-percent {
+  font-size: 0.85rem;
+  color: hsl(var(--bc) / 0.6);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .activity-dashboard {
+    padding: 20px 12px;
+  }
+
+  .activity-title {
+    font-size: 1.8rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .col-name::before {
+    content: "Name: ";
+    font-weight: 700;
+    color: hsl(var(--bc) / 0.6);
+  }
+
+  .col-messages::before {
+    content: "Messages: ";
+    font-weight: 700;
+    color: hsl(var(--bc) / 0.6);
+  }
+
+  .col-status::before {
+    content: "Status: ";
+    font-weight: 700;
+    color: hsl(var(--bc) / 0.6);
+  }
+}

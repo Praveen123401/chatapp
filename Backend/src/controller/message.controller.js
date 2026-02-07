@@ -8,7 +8,21 @@ export const getUsersForSidebar = async (req, res) => {
     const loggedInUserId = req.user._id;
     const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
 
-    res.status(200).json(filteredUsers);
+    // Return users with online status, lastSeen, and profilepic
+    const usersWithStatus = filteredUsers.map(user => ({
+      _id: user._id,
+      email: user.email,
+      fullName: user.fullName,
+      username: user.username,
+      profilepic: user.profilepic,
+      isOnline: user.isOnline,
+      lastSeen: user.lastSeen,
+      status: user.status,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    }));
+
+    res.status(200).json(usersWithStatus);
   } catch (error) {
     console.error("Error in getUsersForSidebar: ", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -24,6 +38,19 @@ export const getMessages = async (req, res) => {
       { senderId: userToChatId, receiverId: myId, status: { $ne: "read" } },
       { $set: { status: "delivered" } }
     );
+
+    const deliveredMessages = await Message.find({
+      senderId: userToChatId,
+      receiverId: myId,
+      status: "delivered",
+    });
+
+    const senderSocketId = getReceiverSocketId(userToChatId);
+    if (senderSocketId) {
+      deliveredMessages.forEach((msg) => {
+        io.to(senderSocketId).emit("messageUpdated", msg);
+      });
+    }
 
     const messages = await Message.find({
       $and: [
@@ -46,7 +73,7 @@ export const getMessages = async (req, res) => {
 
 export const sendMessage = async (req, res) => {
   try {
-    const { text, image, replyTo } = req.body;
+    const { text, image, replyTo, audioMessage, messageType } = req.body;
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
@@ -57,11 +84,26 @@ export const sendMessage = async (req, res) => {
       imageUrl = uploadResponse.secure_url;
     }
 
+    let audioUrl;
+    if (audioMessage?.audio) {
+      try {
+        const uploadResponse = await cloudinary.uploader.upload(audioMessage.audio, {
+          resource_type: "auto",
+        });
+        audioUrl = uploadResponse.secure_url;
+      } catch (error) {
+        console.log("Error uploading audio:", error.message);
+        return res.status(500).json({ error: "Failed to upload audio" });
+      }
+    }
+
     const newMessage = new Message({
       senderId,
       receiverId,
       text,
       image: imageUrl,
+      audioMessage: audioUrl ? { url: audioUrl, duration: audioMessage.duration } : undefined,
+      messageType: messageType || (audioUrl ? "voice_message" : "text"),
       replyTo,
     });
 

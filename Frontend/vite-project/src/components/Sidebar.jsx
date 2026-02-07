@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../Store/useAuthStore.js";
+import { useAuthStore } from "../store/useAuthStore.js";
 import SidebarSkeleton from "./Skeletons/SidebarSkeleton.jsx";
-import { Users, UsersRound, Settings, User, LogOut } from "lucide-react"; 
-import { useChatStore } from "../Store/useChatStore.jsx";
+import { Users, UsersRound, Settings, User, LogOut, Search, X } from "lucide-react"; 
+import { useChatStore } from "../store/useChatStore.jsx";
 import "../styles/sidebar.css";
 
 const Sidebar = () => {
@@ -25,6 +25,7 @@ const Sidebar = () => {
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     getUsers();
@@ -34,6 +35,22 @@ const Sidebar = () => {
   const filteredUsers = showOnlineOnly
     ? users.filter((user) => onlineUsers.includes(user._id))
     : users;
+
+  // Apply search filter to users and groups
+  const searchedUsers = searchQuery.trim()
+    ? filteredUsers.filter((user) =>
+        user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : filteredUsers;
+
+  const onlineList = searchedUsers.filter((user) => onlineUsers.includes(user._id));
+  const offlineList = searchedUsers.filter((user) => !onlineUsers.includes(user._id));
+
+  const searchedGroups = searchQuery.trim()
+    ? groups.filter((group) =>
+        group.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : groups;
 
   if (isUsersLoading) return <SidebarSkeleton />;
 
@@ -70,6 +87,28 @@ const Sidebar = () => {
           >
             + Group
           </button>
+        </div>
+      </div>
+
+      {/* SEARCH BAR */}
+      <div className="sidebar-search">
+        <div className="search-input-wrapper">
+          <Search size={18} className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search contacts..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          {searchQuery && (
+            <button
+              className="search-clear-btn"
+              onClick={() => setSearchQuery("")}
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -118,7 +157,7 @@ const Sidebar = () => {
       {/* CONTACTS LIST */}
       <div className="contacts-list">
         {/* GROUPS */}
-        {groups.map((group) => (
+        {searchedGroups.map((group) => (
           <div
             key={group._id}
             onClick={() => setSelectedGroup(group)}
@@ -139,40 +178,105 @@ const Sidebar = () => {
         ))}
 
         {/* USERS */}
-        {filteredUsers.map((user) => (
-          <div
-            key={user._id}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setSelectedUser(user);
-            }}
-            className={`contact-item ${selectedUser?._id === user._id ? "active" : ""}`}
-          >
-            <div className="contact-avatar-wrapper">
-              {user.profilePic ? (
-                <img
-                  src={user.profilePic}
-                  alt={user.fullName}
-                  className="contact-avatar"
-                />
-              ) : (
-                <div className="contact-avatar default">
-                  {user.fullName.charAt(0).toUpperCase()}
-                </div>
-              )}
-              {onlineUsers.includes(user._id) && (
-                <span className="online-indicator" />
-              )}
-            </div>
-            <div className="contact-info">
-              <div className="contact-name">{user.fullName}</div>
-              <div className="contact-status">
-                {onlineUsers.includes(user._id) ? "online" : "offline"}
+        {showOnlineOnly ? (
+          onlineList.map((user) => (
+            <div
+              key={user._id}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setSelectedUser(user);
+              }}
+              className={`contact-item ${selectedUser?._id === user._id ? "active" : ""}`}
+            >
+              <div className="contact-avatar-wrapper">
+                {user.profilePic ? (
+                  <img
+                    src={user.profilePic}
+                    alt={user.fullName}
+                    className="contact-avatar"
+                  />
+                ) : (
+                  <div className="contact-avatar default">
+                    {user.fullName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                {onlineUsers.includes(user._id) && (
+                  <span className="online-indicator" />
+                )}
+              </div>
+              <div className="contact-info">
+                <div className="contact-name">{user.fullName}</div>
+                <div className="contact-status">online</div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <>
+            <div className="contacts-section-title">Online</div>
+            {onlineList.map((user) => (
+              <div
+                key={user._id}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setSelectedUser(user);
+                }}
+                className={`contact-item ${selectedUser?._id === user._id ? "active" : ""}`}
+              >
+                <div className="contact-avatar-wrapper">
+                  {user.profilePic || user.profilepic ? (
+                    <img
+                      src={user.profilePic || user.profilepic}
+                      alt={user.fullName}
+                      className="contact-avatar"
+                    />
+                  ) : (
+                    <div className="contact-avatar default">
+                      {user.fullName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <span className="online-indicator" />
+                </div>
+                <div className="contact-info">
+                  <div className="contact-name">{user.fullName}</div>
+                  <div className="contact-status">online</div>
+                </div>
+              </div>
+            ))}
+
+            <div className="contacts-section-title">Offline</div>
+            {offlineList.map((user) => (
+              <div
+                key={user._id}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setSelectedUser(user);
+                }}
+                className={`contact-item ${selectedUser?._id === user._id ? "active" : ""}`}
+              >
+                <div className="contact-avatar-wrapper">
+                  {user.profilePic || user.profilepic ? (
+                    <img
+                      src={user.profilePic || user.profilepic}
+                      alt={user.fullName}
+                      className="contact-avatar"
+                    />
+                  ) : (
+                    <div className="contact-avatar default">
+                      {user.fullName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div className="contact-info">
+                  <div className="contact-name">{user.fullName}</div>
+                  <div className="contact-status">offline</div>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       {/* SIDEBAR FOOTER - Settings, Profile, Logout */}

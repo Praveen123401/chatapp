@@ -11,11 +11,7 @@ const userSchema = new mongoose.Schema(
         resetOtpExpire: { type: Date },
         resetOtpAttempts: { type: Number, default: 0 },
 
-
-
-
-
-        profilepic: { type: String, default: "" },
+        profilePic: { type: String, default: "" },
         isOnline: { type: Boolean, default: false },
         lastSeen: { type: Date, default: Date.now },
         status: {

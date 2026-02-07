@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useChatStore } from "../Store/useChatStore.jsx";
+import { useChatStore } from "../store/useChatStore.jsx";
 import "../styles/groupHeader.css";
 
 const GroupHeader = () => {

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { useChatStore } from "../Store/useChatStore.jsx";
+import { useChatStore } from "../store/useChatStore.jsx";
 import "../styles/groupMessageInput.css";
 
 const GroupMessageInput = () => {

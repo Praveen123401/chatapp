@@ -59,12 +59,13 @@ if (process.env.NODE_ENV === "production") {
 // });
 
 
+import "./config/env.js";
 import express from "express";
 import path from "path";
 import multer from "multer";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { fileURLToPath } from "url";
 
 // 🔌 Express + Socket
 import { app, server } from "./lib/socket.js";
@@ -80,14 +81,14 @@ import statusRoutes from "./route/status.route.js";
 import chatThemeRoutes from "./route/chatTheme.route.js";
 import callRoutes from "./route/call.route.js";
 
-dotenv.config();
-
 const PORT = process.env.PORT || 5002;
-const __dirname = path.resolve();
-const frontendUrls = (process.env.FRONTEND_URLS || "http://localhost:5173,http://localhost:5174")
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendUrls = (process.env.FRONTEND_URLS || "http://localhost:5173,http://localhost:5174,http://10.14.146.151:5173,http://10.14.146.151:3000")
   .split(",")
   .map((url) => url.trim())
   .filter(Boolean);
+const allowAllOrigins = process.env.ALLOW_ALL_ORIGINS === "true";
 
 // ==================
 // MIDDLEWARES
@@ -98,7 +99,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: frontendUrls,
+    origin: allowAllOrigins ? true : frontendUrls,
     credentials: true,
   })
 );
@@ -133,5 +134,10 @@ app.use((err, req, res, next) => {
 // ==================
 server.listen(PORT, "0.0.0.0", async () => {
   console.log("🚀 Server running on PORT:", PORT);
-  await connectDB();
+  try {
+    await connectDB();
+  } catch (error) {
+    console.log("⚠️  MongoDB connection failed - running without database");
+    console.log("   (This is OK for testing frontend/network access)");
+  }
 });

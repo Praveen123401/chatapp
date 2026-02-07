@@ -1,40 +1,103 @@
 /* ==========================================
-   HOMEPAGE - WHATSAPP DASHBOARD LAYOUT
+   HOMEPAGE - MODERN CHAT DASHBOARD
+   WITH ENHANCED VISUALS & ANIMATIONS
    ========================================== */
 
 .home-page {
   width: 100vw;
-  height: 100vh;
-  background: #111b21;
+  height: calc(100vh - 64px);
+  background: linear-gradient(135deg, hsl(var(--b1)) 0%, hsl(var(--b2)) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  transition: background 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background pattern */
+.home-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, hsl(var(--p) / 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, hsl(var(--s) / 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .chat-dashboard {
   width: 100%;
   max-width: 1600px;
-  height: calc(100vh - 40px);
-  background: #0b141a;
-  border-radius: 8px;
+  height: calc(100vh - 64px - 40px);
+  background: hsl(var(--b1));
+  border-radius: 24px;
   overflow: hidden;
   display: grid;
   grid-template-columns: 380px 1fr;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 1px hsl(var(--p) / 0.2),
+    inset 0 1px 0 hsl(var(--bc) / 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.chat-dashboard:hover {
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    0 0 1px hsl(var(--p) / 0.3),
+    inset 0 1px 0 hsl(var(--bc) / 0.15);
 }
 
 .chat-main {
-  background: #0b141a;
+  background: hsl(var(--b1));
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Gradient overlay for modern look */
+.chat-main::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, hsl(var(--p) / 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Enhanced transitions */
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-main {
+  animation: fadeInSlide 0.4s ease-out;
 }
 
 /* Responsive */
 @media (max-width: 1024px) {
   .chat-dashboard {
     grid-template-columns: 320px 1fr;
+    border-radius: 16px;
   }
 }
 
@@ -46,7 +109,8 @@
   .chat-dashboard {
     grid-template-columns: 1fr;
     border-radius: 0;
-    height: 100vh;
+    height: calc(100vh - 64px);
+    box-shadow: none;
   }
   
   .chat-main {

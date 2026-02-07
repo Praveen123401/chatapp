@@ -1,3 +1,4 @@
+import "../config/env.js";
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
@@ -12,10 +13,12 @@ const socketFrontendUrls = (process.env.FRONTEND_URLS || "http://localhost:5173,
   .split(",")
   .map((url) => url.trim())
   .filter(Boolean);
+const allowAllOrigins = process.env.ALLOW_ALL_ORIGINS === "true";
 
 const io = new Server(server, {
   cors: {
-    origin: socketFrontendUrls,
+    origin: allowAllOrigins ? true : socketFrontendUrls,
+    credentials: true,
   },
 });
 
@@ -89,6 +92,72 @@ io.on("connection", (socket) => {
   socket.on("joinGroup", (groupId) => {
     if (!groupId) return;
     socket.join(`group:${groupId}`);
+  });
+
+  // ============= CALL EVENTS =============
+  socket.on("callUser", ({ receiverId, callType, callerInfo }) => {
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (!receiverSocketId) {
+      socket.emit("callFailed", { message: "User is offline" });
+      return;
+    }
+
+    io.to(receiverSocketId).emit("incomingCall", {
+      callerId: userId,
+      callType,
+      callerInfo,
+      callerSocketId: socket.id,
+    });
+  });
+
+  socket.on("acceptCall", ({ callerId }) => {
+    const callerSocketId = getReceiverSocketId(callerId);
+    if (callerSocketId) {
+      io.to(callerSocketId).emit("callAccepted", {
+        receiverId: userId,
+        receiverSocketId: socket.id,
+      });
+    }
+  });
+
+  socket.on("rejectCall", ({ callerId }) => {
+    const callerSocketId = getReceiverSocketId(callerId);
+    if (callerSocketId) {
+      io.to(callerSocketId).emit("callRejected", {
+        message: "Call was rejected",
+      });
+    }
+  });
+
+  socket.on("endCall", ({ otherUserId }) => {
+    const otherUserSocketId = getReceiverSocketId(otherUserId);
+    if (otherUserSocketId) {
+      io.to(otherUserSocketId).emit("callEnded", {
+        message: "Call ended",
+      });
+    }
+  });
+
+  socket.on("sendSignal", ({ signal, to }) => {
+    const receiverSocketId = getReceiverSocketId(to);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receiveSignal", {
+        signal,
+        from: userId,
+        socketId: socket.id,
+      });
+    }
+  });
+
+  socket.on("returnSignal", ({ signal, to }) => {
+    const receiverSocketId = getReceiverSocketId(to);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receiveReturnSignal", {
+        signal,
+        from: userId,
+        socketId: socket.id,
+      });
+    }
   });
 
   socket.on("disconnect", () => {

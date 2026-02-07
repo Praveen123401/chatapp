@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useChatStore } from "../Store/useChatStore";
+import { useChatStore } from "../store/useChatStore";
+import { useSettingsStore } from "../store/useSettingsStore";
 import { Image, Send, X, Smile, Paperclip } from "lucide-react";
 import toast from "react-hot-toast";
+import VoiceMessageRecorder from "./VoiceMessageRecorder";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
@@ -19,6 +21,9 @@ const MessageInput = () => {
     editMessage,
     clearEditingMessage,
   } = useChatStore();
+  
+  // Get settings
+  const { enterToSend, soundEnabled } = useSettingsStore();
 
   const emojis = ["😊", "😂", "❤️", "👍", "🎉", "🔥", "😍", "🥳", "👏", "💯"];
 
@@ -67,6 +72,20 @@ const MessageInput = () => {
       clearEditingMessage();
     } catch (error) {
       console.error("Failed to send message:", error);
+    }
+  };
+
+  const handleVoiceRecord = async ({ audio, duration }) => {
+    if (!selectedUser?._id) return;
+    try {
+      await sendMessage({
+        text: "",
+        image: null,
+        audioMessage: { url: audio, duration },
+        messageType: "voice_message",
+      });
+    } catch (error) {
+      console.error("Failed to send voice message:", error);
     }
   };
 
@@ -131,6 +150,8 @@ const MessageInput = () => {
           >
             <Smile size={22} />
           </button>
+
+          <VoiceMessageRecorder onRecord={handleVoiceRecord} />
           
           <button
             type="button"
@@ -147,7 +168,13 @@ const MessageInput = () => {
           value={text}
           onChange={handleTextChange}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
+            // If enterToSend is enabled, send on Enter (without Shift)
+            if (enterToSend && e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage(e);
+            }
+            // If enterToSend is disabled, only Ctrl+Enter sends
+            else if (!enterToSend && e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
               e.preventDefault();
               handleSendMessage(e);
             }

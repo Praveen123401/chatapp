@@ -125,7 +125,7 @@ export const getGroupMessages = async (req, res) => {
 export const sendGroupMessage = async (req, res) => {
   try {
     const { id: groupId } = req.params;
-    const { text, image, replyTo } = req.body;
+    const { text, image, replyTo, audioMessage, messageType } = req.body;
     const senderId = req.user._id;
 
     const group = await Group.findById(groupId);
@@ -141,10 +141,25 @@ export const sendGroupMessage = async (req, res) => {
       imageUrl = uploadResponse.secure_url;
     }
 
+    let audioUrl;
+    if (audioMessage?.audio) {
+      try {
+        const uploadResponse = await cloudinary.uploader.upload(audioMessage.audio, {
+          resource_type: "auto",
+        });
+        audioUrl = uploadResponse.secure_url;
+      } catch (error) {
+        console.log("Error uploading audio:", error.message);
+        return res.status(500).json({ message: "Failed to upload audio" });
+      }
+    }
+
     const newMessage = await Message.create({
       senderId,
       text,
       image: imageUrl,
+      audioMessage: audioUrl ? { url: audioUrl, duration: audioMessage.duration } : undefined,
+      messageType: messageType || (audioUrl ? "voice_message" : "text"),
       groupId,
       replyTo,
     });

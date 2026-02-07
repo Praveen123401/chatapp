@@ -84,7 +84,7 @@ export const login = async (req, res) => {
       _id: user._id,
       fullName: user.fullName,
       email: user.email,
-      profilepic: user.profilepic,
+      profilePic: user.profilePic,
     });
   } catch (error) {
     console.log("Error in login controller:", error);
@@ -146,7 +146,7 @@ export const updateProfile = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
   userId,
-  { profilepic: profilePicUrl }, // 👈 lowercase p
+  { profilePic: profilePicUrl }, // ✅ Fixed: capital P
   { new: true }
 ).select("-password");
 

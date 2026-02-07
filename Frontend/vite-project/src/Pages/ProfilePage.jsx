@@ -215,7 +215,7 @@
 // export default ProfilePage;  
 
 import { useState } from "react";
-import { useAuthStore } from "../Store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 import {
   Camera, Mail, User, ShieldCheck, Trash2, Check, X,
   Loader2, Phone, Cake, Calendar, Power,

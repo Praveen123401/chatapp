@@ -1,12 +1,12 @@
-import { useChatStore } from "../Store/useChatStore";
-
-import { useEffect, useRef } from "react";
+import { useChatStore } from "../store/useChatStore";
+import { useSettingsStore } from "../store/useSettingsStore";
+import { useEffect, useRef, useState } from "react";
 import { Pencil, Reply, Smile, Trash2 } from "lucide-react";
 
-import ChatHeader from "./ChatHeader";
+import ChatHeader from "./chatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./Skeletons/MessageSkeleton"; 
-import { useAuthStore } from "../Store/useAuthStore.js";
+import { useAuthStore } from "../store/useAuthStore.js";
 
 import { formatMessageTime } from "../lib/utils";
 
@@ -30,7 +30,14 @@ const ChatContainer = () => {
     toggleReaction,
   } = useChatStore();
   const { authUser } = useAuthStore();
+  const { showTimestamps, messageGrouping, readReceipts, soundEnabled } = useSettingsStore();
   const messageEndRef = useRef(null);
+  const audioRefs = useRef({});
+  const [playbackRates, setPlaybackRates] = useState({});
+  const [openReactionPickerId, setOpenReactionPickerId] = useState(null);
+
+  const reactionEmojis = ["👍", "❤️", "😂", "😮", "😢", "🔥", "👏", "🎉", "💯", "🙏"];
+  const rateOptions = [1, 1.5, 2];
 
   useEffect(() => {
     getMessages(selectedUser._id);
@@ -92,6 +99,12 @@ const ChatContainer = () => {
     }, {});
   };
 
+  const renderStatusIcon = (status) => {
+    if (status === "read") return "✓✓";
+    if (status === "delivered") return "✓✓";
+    return "✓";
+  };
+
   return (
     <div className="chat-container">
       <ChatHeader />
@@ -105,6 +118,7 @@ const ChatContainer = () => {
           messages.map((message) => (
             <div
               key={message._id}
+              id={`message-${message._id}`}
               className={`message-item ${
                 message.senderId === authUser._id ? "sent" : "received"
               }`}
@@ -123,6 +137,44 @@ const ChatContainer = () => {
                       alt="Attachment"
                       className="sm:max-w-[200px] rounded-md mb-2"
                     />
+                  )}
+                  {message.audioMessage?.url && (
+                    <div className="voice-message">
+                      <audio
+                        controls
+                        src={message.audioMessage.url}
+                        ref={(el) => {
+                          if (el) {
+                            audioRefs.current[message._id] = el;
+                            el.playbackRate = playbackRates[message._id] || 1;
+                          }
+                        }}
+                      />
+                      <div className="voice-controls">
+                        {rateOptions.map((rate) => (
+                          <button
+                            key={rate}
+                            type="button"
+                            className={`voice-rate-btn ${
+                              (playbackRates[message._id] || 1) === rate ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setPlaybackRates((prev) => ({ ...prev, [message._id]: rate }));
+                              const audioEl = audioRefs.current[message._id];
+                              if (audioEl) audioEl.playbackRate = rate;
+                            }}
+                          >
+                            {rate}x
+                          </button>
+                        ))}
+                        {message.audioMessage?.duration ? (
+                          <span className="voice-duration">
+                            {Math.floor(message.audioMessage.duration / 60)}:
+                            {String(message.audioMessage.duration % 60).padStart(2, "0")}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
                   )}
                   {message.deletedForEveryone ? (
                     <p className="text-xs opacity-60 italic">Message deleted</p>
@@ -166,8 +218,12 @@ const ChatContainer = () => {
                       <button
                         type="button"
                         className="message-action-btn"
-                        onClick={() => toggleReaction(message._id, "👍")}
-                        title="Like"
+                        onClick={() =>
+                          setOpenReactionPickerId(
+                            openReactionPickerId === message._id ? null : message._id
+                          )
+                        }
+                        title="React"
                       >
                         <Smile className="w-4 h-4" />
                       </button>
@@ -200,15 +256,35 @@ const ChatContainer = () => {
                       )}
                     </div>
                   )}
+
+                  {openReactionPickerId === message._id && !message.deletedForEveryone && (
+                    <div className="emoji-picker reaction-picker">
+                      {reactionEmojis.map((emoji) => (
+                        <button
+                          key={emoji}
+                          onClick={() => {
+                            toggleReaction(message._id, emoji);
+                            setOpenReactionPickerId(null);
+                          }}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="message-footer">
-                  <time className="message-time">
-                    {formatMessageTime(message.createdAt)}
-                  </time>
+                  {showTimestamps && (
+                    <time className="message-time">
+                      {formatMessageTime(message.createdAt)}
+                    </time>
+                  )}
                   {message.isEdited && <span className="text-[10px]">(edited)</span>}
-                  {message.status && message.senderId === authUser._id && (
-                    <span className="text-[10px] capitalize">{message.status}</span>
+                  {readReceipts && message.status && message.senderId === authUser._id && (
+                    <span className={`message-status ${message.status}`}>
+                      {renderStatusIcon(message.status)}
+                    </span>
                   )}
                 </div>
               </div>
