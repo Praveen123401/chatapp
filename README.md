@@ -78,7 +78,7 @@
 
 ```bash
 # 1. Clone and enter directory
-git clone <your-repo> && cd chat-app
+git clone https://github.com/Praveen123401/chatapp.git && cd chat-app
 
 # 2. Backend setup
 cd Backend
